@@ -32,10 +32,10 @@ class HotelRepository
      */
     public function listHotels()
     {
-        try{
+        try {
             // we could use api uri -> as env
             $hotelsJson = $this->client->request('GET', 'https://api.myjson.com/bins/tl0bp');
-        }catch (ClientException $e){
+        } catch (ClientException $e) {
             return $e->getMessage();
         }
 
