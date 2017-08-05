@@ -51,6 +51,9 @@ class HotelsService
 
         // if no params as filters return all hotels
         if ($this->checkFiltering($searchArr) == 0) {
+            if (Input::get('sort')) {
+                return $this->sortHotels($hotels, Input::get('sort'), Input::get('sort_type'));
+            }
             return $hotels;
         }
 
@@ -61,6 +64,10 @@ class HotelsService
             if ($this->searchHotels((array)$hotel, $searchArr)) {
                 $tempArr[] = $hotel;
             }
+        }
+
+        if (Input::get('sort')) {
+            return $this->sortHotels($tempArr, Input::get('sort'), Input::get('sort_type'));
         }
 
         return $tempArr;
@@ -139,5 +146,21 @@ class HotelsService
         $status = $statusFrom + $statusTo;
 
         return $status > 1 ? true : false;
+    }
+
+    private function sortHotels($hotels, $sort, $type)
+    {
+        $type == 'desc' ? $type = 'desc' : $type = 'asc';
+
+        // Requires PHP 7
+        usort($hotels, function($item1, $item2) use ($sort, $type){
+            if ($type == 'desc') {
+                return $item2->$sort <=> $item1->$sort;
+            }
+
+            return $item1->$sort <=> $item2->$sort;
+        });
+
+        return $hotels;
     }
 }
