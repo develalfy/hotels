@@ -34,7 +34,7 @@ class HotelRepository
     {
         try {
             // we could use api uri -> as env
-            $hotelsJson = $this->client->request('GET', 'https://api.myjson.com/bins/tl0bp');
+            $hotelsJson = $this->client->request('GET', env('API_URL', 'https://api.myjson.com/bins/tl0bp'));
         } catch (ClientException $e) {
             return $e->getMessage();
         }
