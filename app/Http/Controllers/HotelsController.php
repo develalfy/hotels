@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Validation\Rules\In;
+use Src\Hotels\Helpers;
 use Src\Hotels\HotelsService;
 
 /**
@@ -36,7 +37,19 @@ class HotelsController extends Controller
             'sort_type' => Input::get('sort_type')
         );
 
-        $hotels = $hotelsService->listHotels($searchArr, $sortArr);
+        // Get all hotels
+        $hotels = $hotelsService->listHotels();
+
+        // Filter if needed
+        if (Helpers::checkFiltering($searchArr) > 0) {
+            $hotels = $hotelsService->searchHotels($hotels, $searchArr);
+        }
+
+        // Sort if needed
+        if ($sortArr['sort']) {
+            $hotels = $hotelsService->sortHotels($hotels, $sortArr);
+        }
+
 
         return response()->json(['hotels' => $hotels]);
     }

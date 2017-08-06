@@ -12,6 +12,10 @@ namespace Src\Hotels;
  * Class HotelsService
  * @package Src\Hotels
  */
+/**
+ * Class HotelsService
+ * @package Src\Hotels
+ */
 class HotelsService
 {
     /**
@@ -30,23 +34,24 @@ class HotelsService
 
     /**
      * List hotels
-     * @param $searchArr
-     * @param $sortArr
      * @return int|mixed
+     * @internal param $searchArr
+     * @internal param $sortArr
      */
-    public function listHotels($searchArr, $sortArr)
+    public function listHotels()
     {
         $hotels = $this->hotelRepository->listHotels();
 
-        // if no params as filters return all hotels
-        if (Helpers::checkFiltering($searchArr) == 0) {
-            if ($sortArr['sort']) {
-                return Helpers::sortHotels($hotels, $sortArr['sort'], $sortArr['sort_type']);
-            }
+        return $hotels;
+    }
 
-            return $hotels;
-        }
-
+    /**
+     * @param $hotels
+     * @param $searchArr
+     * @return mixed
+     */
+    public function searchHotels($hotels, $searchArr)
+    {
         // search for every hotel
         $tempArr = [];
         foreach ($hotels as $hotel) {
@@ -55,12 +60,19 @@ class HotelsService
             }
         }
 
-        // is  fort is param then sort hotels
-        if ($sortArr['sort']) {
-            return Helpers::sortHotels($tempArr, $sortArr['sort'], $sortArr['sort_type']);
-        }
-
         return $tempArr;
     }
 
+
+    /**
+     * @param $hotels
+     * @param $sortArr
+     * @return mixed
+     */
+    public function sortHotels($hotels, $sortArr)
+    {
+        $hotels = Helpers::sortHotels($hotels, $sortArr['sort'], $sortArr['sort_type']);
+
+        return $hotels;
+    }
 }
