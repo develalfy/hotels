@@ -16,16 +16,20 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
  */
 class HotelTest extends TestCase
 {
+
+    private $repository;
+
     /**
      * A basic test example.
      *
      * @return void
      */
-    /*public function setUp()
+    public function setUp()
     {
         parent::setUp();
 
-    }*/
+        $this->repository = Mockery::mock(HotelRepository::class);
+    }
 
     /**
      * test list hotels service
@@ -93,12 +97,10 @@ class HotelTest extends TestCase
         ];
 
 
-        $repository = Mockery::mock(HotelRepository::class);
-
-        $repository->shouldReceive('listHotels')
+        $this->repository->shouldReceive('listHotels')
             ->andReturn($hotels);
 
-        $service = new HotelsService($repository);
+        $service = new HotelsService($this->repository);
         $this->assertEquals($hotels, $service->listHotels());
 
     }
@@ -179,12 +181,10 @@ class HotelTest extends TestCase
         );
 
 
-        $repository = Mockery::mock(HotelRepository::class);
-
-        $repository->shouldReceive('listHotels')
+        $this->repository->shouldReceive('listHotels')
             ->andReturn($hotels);
 
-        $service = new HotelsService($repository);
+        $service = new HotelsService($this->repository);
         $this->assertEquals($hotels, $service->searchHotels($hotels, $searchArr));
     }
 
@@ -260,12 +260,10 @@ class HotelTest extends TestCase
         );
 
 
-        $repository = Mockery::mock(HotelRepository::class);
-
-        $repository->shouldReceive('listHotels')
+        $this->repository->shouldReceive('listHotels')
             ->andReturn($hotels);
 
-        $service = new HotelsService($repository);
+        $service = new HotelsService($this->repository);
 
         $this->assertEquals($hotels, $service->sortHotels($hotels, $sortArr));
     }
