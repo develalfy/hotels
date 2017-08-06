@@ -47,13 +47,28 @@ class HotelTest extends TestCase
             ]
         ];
 
+        // search params
+        $searchArr = array(
+            'name' => 'Golden Tulip',
+            'city' => 'paris',
+            'price_from' => '50',
+            'price_to' => '110',
+            'date_from' => '10-10-2020',
+            'date_to' => '17-10-2020'
+        );
+        // sort params
+        $sortArr = array(
+            'sort' => 'price',
+            'sort_type' => 'desc'
+        );
+
         $repository = Mockery::mock(HotelRepository::class);
 
         $repository->shouldReceive('listHotels')
             ->andReturn($array);
 
         $service = new HotelsService($repository);
-        $this->assertEquals($array, $service->listHotels());
+        $this->assertEquals($array, $service->listHotels($searchArr, $sortArr));
 
     }
 }
