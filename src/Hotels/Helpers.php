@@ -96,11 +96,13 @@ class Helpers{
         $type == 'desc' ? $type = 'desc' : $type = 'asc';
 
         usort($hotels, function($item1, $item2) use ($sort, $type){
+            $item1 = (array) $item1;
+            $item2 = (array) $item2;
             if ($type == 'desc') {
-                return $item2->$sort <=> $item1->$sort;
+                return $item2[$sort]<=> $item1[$sort];
             }
 
-            return $item1->$sort <=> $item2->$sort;
+            return $item1[$sort]<=> $item2[$sort];
         });
 
         return $hotels;

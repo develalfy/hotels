@@ -10,6 +10,10 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
+/**
+ * Class HotelTest
+ * @package Tests\Feature
+ */
 class HotelTest extends TestCase
 {
     /**
@@ -23,13 +27,130 @@ class HotelTest extends TestCase
 
     }*/
 
+    /**
+     * test list hotels service
+     */
     public function testListHotels()
     {
-        $array = [
+        $hotels = [
             [
                 "name" => "Golden Tulip",
                 "price" => 109.6,
                 "city" => "paris",
+                "availability" => [
+                    [
+                        "from" => "10-10-2020",
+                        "to" => "15-10-2020"
+                    ],
+                    [
+                        "from" => "25-10-2020",
+                        "to" => "15-11-2020"
+                    ],
+                    [
+                        "from" => "10-12-2020",
+                        "to" => "15-12-2020"
+                    ]
+                ]
+            ],
+            [
+                "name" => "Silver Tulip",
+                "price" => 50,
+                "city" => "paris",
+                "availability" => [
+                    [
+                        "from" => "10-10-2020",
+                        "to" => "15-10-2020"
+                    ],
+                    [
+                        "from" => "25-10-2020",
+                        "to" => "15-11-2020"
+                    ],
+                    [
+                        "from" => "10-12-2020",
+                        "to" => "15-12-2020"
+                    ]
+                ]
+            ],
+            [
+                "name" => "Normal Tulip",
+                "price" => 90.6,
+                "city" => "delhi",
+                "availability" => [
+                    [
+                        "from" => "10-10-2020",
+                        "to" => "15-10-2020"
+                    ],
+                    [
+                        "from" => "25-10-2020",
+                        "to" => "15-11-2020"
+                    ],
+                    [
+                        "from" => "10-12-2020",
+                        "to" => "15-12-2020"
+                    ]
+                ]
+            ]
+        ];
+
+
+        $repository = Mockery::mock(HotelRepository::class);
+
+        $repository->shouldReceive('listHotels')
+            ->andReturn($hotels);
+
+        $service = new HotelsService($repository);
+        $this->assertEquals($hotels, $service->listHotels());
+
+    }
+
+    /**
+     * test search hotels service
+     */
+    public function testSearchHotels()
+    {
+        $hotels = [
+            [
+                "name" => "Golden Tulip",
+                "price" => 109.6,
+                "city" => "paris",
+                "availability" => [
+                    [
+                        "from" => "10-10-2020",
+                        "to" => "15-10-2020"
+                    ],
+                    [
+                        "from" => "25-10-2020",
+                        "to" => "15-11-2020"
+                    ],
+                    [
+                        "from" => "10-12-2020",
+                        "to" => "15-12-2020"
+                    ]
+                ]
+            ],
+            [
+                "name" => "Silver Tulip",
+                "price" => 50,
+                "city" => "paris",
+                "availability" => [
+                    [
+                        "from" => "10-10-2020",
+                        "to" => "15-10-2020"
+                    ],
+                    [
+                        "from" => "25-10-2020",
+                        "to" => "15-11-2020"
+                    ],
+                    [
+                        "from" => "10-12-2020",
+                        "to" => "15-12-2020"
+                    ]
+                ]
+            ],
+            [
+                "name" => "Normal Tulip",
+                "price" => 90.6,
+                "city" => "delhi",
                 "availability" => [
                     [
                         "from" => "10-10-2020",
@@ -56,19 +177,96 @@ class HotelTest extends TestCase
             'date_from' => '10-10-2020',
             'date_to' => '17-10-2020'
         );
+
+
+        $repository = Mockery::mock(HotelRepository::class);
+
+        $repository->shouldReceive('listHotels')
+            ->andReturn($hotels);
+
+        $service = new HotelsService($repository);
+        $this->assertEquals($hotels, $service->searchHotels($hotels, $searchArr));
+    }
+
+    /**
+     * test sort hotels service
+     */
+    public function testSortHotels()
+    {
+        $hotels = [
+            [
+                "name" => "Golden Tulip",
+                "price" => 109.6,
+                "city" => "paris",
+                "availability" => [
+                    [
+                        "from" => "10-10-2020",
+                        "to" => "15-10-2020"
+                    ],
+                    [
+                        "from" => "25-10-2020",
+                        "to" => "15-11-2020"
+                    ],
+                    [
+                        "from" => "10-12-2020",
+                        "to" => "15-12-2020"
+                    ]
+                ]
+            ],
+            [
+                "name" => "Silver Tulip",
+                "price" => 90,
+                "city" => "paris",
+                "availability" => [
+                    [
+                        "from" => "10-10-2020",
+                        "to" => "15-10-2020"
+                    ],
+                    [
+                        "from" => "25-10-2020",
+                        "to" => "15-11-2020"
+                    ],
+                    [
+                        "from" => "10-12-2020",
+                        "to" => "15-12-2020"
+                    ]
+                ]
+            ],
+            [
+                "name" => "Normal Tulip",
+                "price" => 50.6,
+                "city" => "delhi",
+                "availability" => [
+                    [
+                        "from" => "10-10-2020",
+                        "to" => "15-10-2020"
+                    ],
+                    [
+                        "from" => "25-10-2020",
+                        "to" => "15-11-2020"
+                    ],
+                    [
+                        "from" => "10-12-2020",
+                        "to" => "15-12-2020"
+                    ]
+                ]
+            ]
+        ];
+
         // sort params
         $sortArr = array(
             'sort' => 'price',
             'sort_type' => 'desc'
         );
 
+
         $repository = Mockery::mock(HotelRepository::class);
 
         $repository->shouldReceive('listHotels')
-            ->andReturn($array);
+            ->andReturn($hotels);
 
         $service = new HotelsService($repository);
-        $this->assertEquals($array, $service->listHotels($searchArr, $sortArr));
 
+        $this->assertEquals($hotels, $service->sortHotels($hotels, $sortArr));
     }
 }

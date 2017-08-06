@@ -22,7 +22,7 @@
 - main URL like this `http://localhost:8000/api/hotels`
 	- Use these parameters (one or all): `name, city, price_from, price_to, date_from, date_to, sort, sort_type` :-
 		- Example:`http://localhost:8000/api/hotels?price_to=100&sort=price&sort_type=desc`.
-		- Demo:-`http://elalfi.me/hotels/public/api/hotels?price_to=100&sort=price&sort_type=desc`.
+		- [Live Demo](http://elalfi.me/hotels/public/api/hotels?price_to=100&sort=price&sort_type=desc).
 
 ----------
 ## PHPUnit
